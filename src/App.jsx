@@ -1,7 +1,8 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Index from "./pages/Index.jsx";
 import AddPost from "./pages/AddPost.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Box, Button, useColorMode } from "@chakra-ui/react";
 
 function App() {
   const [posts, setPosts] = useState([
@@ -23,12 +24,30 @@ function App() {
     setPosts([post, ...posts]);
   };
 
+  const { colorMode, toggleColorMode } = useColorMode();
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme && savedTheme !== colorMode) {
+      toggleColorMode();
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("theme", colorMode);
+  }, [colorMode]);
+
   return (
     <Router>
-      <Routes>
-        <Route exact path="/" element={<Index posts={posts} />} />
-        <Route path="/add-post" element={<AddPost addPost={addPost} />} />
-      </Routes>
+      <Box p={4}>
+        <Button onClick={toggleColorMode} mb={4}>
+          Toggle {colorMode === "light" ? "Dark" : "Light"}
+        </Button>
+        <Routes>
+          <Route exact path="/" element={<Index posts={posts} />} />
+          <Route path="/add-post" element={<AddPost addPost={addPost} />} />
+        </Routes>
+      </Box>
     </Router>
   );
 }
