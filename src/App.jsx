@@ -24,6 +24,10 @@ function App() {
     setPosts([post, ...posts]);
   };
 
+  const deletePost = (index) => {
+    setPosts(posts.filter((_, i) => i !== index));
+  };
+
   const { colorMode, toggleColorMode } = useColorMode();
 
   useEffect(() => {
@@ -44,7 +48,7 @@ function App() {
           Toggle {colorMode === "light" ? "Dark" : "Light"}
         </Button>
         <Routes>
-          <Route exact path="/" element={<Index posts={posts} />} />
+          <Route exact path="/" element={<Index posts={posts} deletePost={deletePost} />} />
           <Route path="/add-post" element={<AddPost addPost={addPost} />} />
         </Routes>
       </Box>

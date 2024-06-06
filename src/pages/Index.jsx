@@ -1,8 +1,12 @@
 import { Container, Text, VStack, Heading, Box, Image, Link, HStack, Button } from "@chakra-ui/react";
 import { FaTwitter, FaLinkedin, FaGithub } from "react-icons/fa";
 import { Link as RouterLink } from "react-router-dom";
-
-const Index = ({ posts }) => {
+const Index = ({ posts, deletePost }) => {
+  const handleDelete = (index) => {
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      deletePost(index);
+    }
+  };
   return (
     <Container centerContent maxW="container.md" py={10}>
       <VStack spacing={8} align="stretch">
@@ -24,6 +28,7 @@ const Index = ({ posts }) => {
                 <Heading fontSize="xl">{post.title}</Heading>
                 <Text mt={4}>{post.content}</Text>
                 {post.imageUrl && <Image borderRadius="md" src={post.imageUrl} alt={post.title} mt={4} />}
+                <Button colorScheme="red" mt={4} onClick={() => handleDelete(index)}>Delete</Button>
               </Box>
             ))}
           </VStack>
